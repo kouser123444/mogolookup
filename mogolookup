@@ -1,1 +1,31 @@
 
+db.city.aggregate([
+  {
+    $lookup: {
+      from: "country",
+      localField: "CountryCode",
+      foreignField: "Code",
+      as: "CountryDetail"
+    }
+  },
+  {
+    $unwind: "$CountryDetail"
+  }
+])
+
+db.createCollection("countrywithview2", {
+  viewOn: "city",
+  pipeline: [
+  {
+    $lookup: {
+      from: "country",
+      localField: "CountryCode",
+      foreignField: "Code",
+      as: "CountryDetail"
+    }
+  },
+  {
+    $unwind: "$CountryDetail"
+  }
+]
+})
